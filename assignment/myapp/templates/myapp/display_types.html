@@ -1,0 +1,49 @@
+{% extends "myapp/base.html" %}
+
+{% comment %} 
+Program:  Web Based Database Application
+Filename: display_types.html               
+@author:  © Jack Styles             
+Course:   BSc Digital Technology Solutions                     
+Module:   Software Engineering and Agile             
+Tutor:    Suraksha Neupane                         
+@version: 1.0     
+Date:     22/09/23
+{% endcomment %}
+
+{% block title %}
+<h1>View Ticket Types</h1>
+{% endblock %}
+{% block content %}
+    {% include 'myapp/messages.html' %}
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Type Name</th>
+                <th>Creator</th>
+                <th>View Type</th>
+                <th>Update Type</th>
+                {% if user.is_superuser %}
+                <th> Delete Type</th>
+                {% endif %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in items %}
+                <tr scope="row">
+                    <td> {{item.ticket_type.type_name}} </td>
+                    <td> {{item.reporter}} </td>
+                    <td> <a href="/view_type/{{item.ticket_type.type_name}}"> View </a> </td>
+                    {% if item.can_update %}
+                    <td> <a href="/update_type/{{item.ticket_type.type_name}}"> Update </a> </td>
+                    {% else %}
+                    <td>Cannot Update</td>
+                    {% endif %}
+                    {% if user.is_superuser %}
+                    <td> <a href="/delete_type/{{item.ticket_type.type_name}}"> Delete </a> </td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends "myapp/base.html" %}
+
+{% comment %} 
+Program:  Web Based Database Application
+Filename: delete_object.html               
+@author:  © Jack Styles             
+Course:   BSc Digital Technology Solutions                     
+Module:   Software Engineering and Agile             
+Tutor:    Suraksha Neupane                         
+@version: 1.0     
+Date:     22/09/23
+{% endcomment %}
+
+{% block title %}
+<h1> Delete {{model_name}} </h1>
+{% endblock %}
+{% block content %}
+<p> Are you sure you want to delete {{object_name}} {{object_id}} </p>
+
+<form action="" method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger" name="delete">Delete</button>
+    {% if model_name == "Ticket"%}
+    <button href="/view_tickets" class="btn btn-warning">Cancel</button>
+    {% endif %}
+    {% if model_name == "Status"%}
+    <button href="/view_statuses" class="btn btn-warning">Cancel</button>
+    {% endif %}
+    {% if model_name == "Ticket Type"%}
+    <button href="/view_types" class="btn btn-warning">Cancel</button>
+    {% endif %}
+</form>
+{% endblock %}

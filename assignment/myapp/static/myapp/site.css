@@ -1,0 +1,14 @@
+h1 {
+    color:black;
+    text-align: center;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.sidebar {
+    margin-top: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    list-style: none;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    background-color: skyblue;
+}

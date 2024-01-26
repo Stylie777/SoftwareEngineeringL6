@@ -1,0 +1,38 @@
+{% extends "myapp/base.html" %}
+
+{% comment %} 
+Program:  Web Based Database Application
+Filename: form.html               
+@author:  © Jack Styles             
+Course:   BSc Digital Technology Solutions                     
+Module:   Software Engineering and Agile             
+Tutor:    Suraksha Neupane                         
+@version: 1.0     
+Date:     22/09/23
+{% endcomment %}
+
+{% block title %}
+<h1>{{title}}</h1>
+{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+    <div class="form-group">
+        <form method="POST">
+            {% csrf_token %}
+            {% for field in form.visible_fields %}
+                <div class="fieldWrapper">
+                    {% for error in field.errors %}
+                        <div class="alert alert-danger"> {{ field.label_tag }} {{ error }}</div>
+                    {% endfor %}
+                    {{ field.label_tag }} {{ field }}
+                    <br>
+                </div>
+            {% endfor %}
+            <button class="btn btn-primary" type="submit">Submit</button>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

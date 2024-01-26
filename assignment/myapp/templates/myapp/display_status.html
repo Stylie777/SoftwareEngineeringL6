@@ -1,0 +1,53 @@
+{% extends "myapp/base.html" %}
+
+{% comment %} 
+Program:  Web Based Database Application
+Filename: display_status.html               
+@author:  © Jack Styles             
+Course:   BSc Digital Technology Solutions                     
+Module:   Software Engineering and Agile             
+Tutor:    Suraksha Neupane                         
+@version: 1.0     
+Date:     22/09/23
+{% endcomment %}
+
+{% block title %}
+<h1>Status: {{status.status_name}}</h1>
+{% endblock %}
+{% block content %}
+    {% include 'myapp/messages.html' %}
+    <div class="container">
+    <div class="row">
+        <div class="col-sm">
+            <h2>{{status.status_name}}</h2>
+        </div>
+        <div class="col-sm">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-6">
+            <div class = "row">
+                <div class="col-sm">
+                    {% if can_update %}
+                    <a role="button" class ="btn btn-warning" href="../update_status/{{status.status_name}}">Update</a>
+                    {% endif %}
+                </div>
+            </div>
+            <div class = "row">
+                <div class="col-sm">
+                    {% if user.is_superuser %}
+                    <a role="button" class ="btn btn-danger" href="../delete_status/{{status.status_name}}">Delete</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-body">
+                    <p>{{status.status_description}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

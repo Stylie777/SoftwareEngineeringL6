@@ -1,0 +1,28 @@
+{% extends "myapp/base.html" %}
+
+{% comment %} 
+Program:  Web Based Database Application
+Filename: login.html               
+@author:  © Jack Styles             
+Course:   BSc Digital Technology Solutions                     
+Module:   Software Engineering and Agile             
+Tutor:    Suraksha Neupane                         
+@version: 1.0     
+Date:     22/09/23
+{% endcomment %}
+
+{% block title %}
+    <h1>Login</h1>
+{% endblock %}
+{% block content %}
+    {% include 'myapp/messages.html' %}
+
+    <div class="container py-5">
+        <form method="POST">
+            {% csrf_token %}
+            {{login_form.as_p}}
+            <button class="btn btn-success" type="submit">Login</button>
+        </form>
+        <p class="text-centre">Need an account? <a href="/register"> Create an account here!</a>.</p>
+    </div>
+{% endblock %}

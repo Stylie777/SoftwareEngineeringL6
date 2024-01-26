@@ -1,0 +1,57 @@
+{% extends "myapp/base.html" %}
+
+{% comment %} 
+Program:  Web Based Database Application
+Filename: display_tickets.html               
+@author:  © Jack Styles             
+Course:   BSc Digital Technology Solutions                     
+Module:   Software Engineering and Agile             
+Tutor:    Suraksha Neupane                         
+@version: 1.0     
+Date:     22/09/23
+{% endcomment %}
+
+{% block title %}
+<h1>View Tickets</h1>
+{% endblock %}
+{% block content %}
+    {% include 'myapp/messages.html' %}
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Ticket ID</th>
+                <th>Ticket Title</th>
+                <th>Assignee</th>
+                <th>Reporter</th>
+                <th>Ticket Type</th>
+                <th>Ticket Status</th>
+                <th>View Ticket</th>
+                <th>Update Ticket</th>
+                {% if user.is_superuser %}
+                <th> Delete Ticket</th>
+                {% endif %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in items %}
+                <tr scope="row">
+                    <td> {{item.ticket.ticket_id}} </td>
+                    <td> {{item.ticket.ticket_title}} </td>
+                    <td> {{item.ticket.assignee}} </td>
+                    <td> {{item.reporter}} </td>
+                    <td> {{item.ticket.type}} </td>
+                    <td> {{item.ticket.status}} </td>
+                    <td> <a href="/view_ticket/{{item.ticket.ticket_id}}"> Link </a> </td>
+                    {% if item.can_update %}
+                    <td> <a href="/update_ticket/{{item.ticket.ticket_id}}"> Update </a> </td>
+                    {% else %}
+                    <td>Cannot Update</td>
+                    {% endif %}
+                    {% if user.is_superuser %}
+                    <td> <a href="/delete_ticket/{{item.ticket.ticket_id}}"> Delete </a> </td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

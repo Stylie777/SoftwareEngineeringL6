@@ -1,0 +1,30 @@
+{% extends "myapp/base.html" %}
+
+{% comment %} 
+Program:  Web Based Database Application
+Filename: register.html               
+@author:  © Jack Styles             
+Course:   BSc Digital Technology Solutions                     
+Module:   Software Engineering and Agile             
+Tutor:    Suraksha Neupane                         
+@version: 1.0     
+Date:     22/09/23
+{% endcomment %}
+
+{% block title %}
+<h1>Registration Page</h1>
+{% endblock %}
+{% block content %}
+    {% include 'myapp/messages.html' %}
+
+<div class="container py-5">
+    <div class="form-group">
+        <form method="POST">
+            {% csrf_token %}
+            {{register_form.as_p}}                    
+            <button class="btn btn-primary" type="submit">Register</button>
+        </form>
+        <p class="text-center">If you already have an account, <a href="/login">login</a> instead.</p>
+    </div>
+</div>
+{% endblock %}

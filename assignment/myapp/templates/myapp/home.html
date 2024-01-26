@@ -1,0 +1,55 @@
+{% extends "myapp/base.html" %}
+
+{% comment %} 
+Program:  Web Based Database Application
+Filename: home.html               
+@author:  © Jack Styles             
+Course:   BSc Digital Technology Solutions                     
+Module:   Software Engineering and Agile             
+Tutor:    Suraksha Neupane                         
+@version: 1.0     
+Date:     22/09/23
+{% endcomment %}
+
+{% block title %}
+    <h1 class="primary">Home Page</h1>
+{% endblock %}
+{% block content %}
+    {% include 'myapp/messages.html' %}
+
+    <div class="containter-fluid">
+        <div class="row">
+            <div class="col-lg-6">
+                <h2>Further Information</h2>
+                <p>For futher information on using this system, please refer to the <a href="/readme">Readme</a> page. This is generated using the markdown python library. The link to the original document is <a href="https://github.com/Stylie777/SoftwareEngineeringL5/blob/main/assignment/assignment/README.md">here</a><p/>
+            </div>
+            <div class="col-lg-6">
+                <h2>Your Assigned Tickets</h2>
+                {% if user.is_authenticated%}
+                    <table class="table table-striped">
+                        
+                        <thead>
+                            <tr>
+                                <th>Ticket ID</th>
+                                <th>Ticket Title</th>
+                                <th>View Ticket</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for ticket in tickets %}
+                                <tr scope="row">
+                                    <td> {{ticket.ticket_id}} </td>
+                                    <td> {{ticket.ticket_title}} </td>
+                                    <td> <a href="/view_ticket/{{ticket.ticket_id}}"> Link </a> </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table> 
+                
+                    {% else %}
+                    <p>Please Login to view currently assigned tickets</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
