@@ -16,12 +16,12 @@ from myapp.views import (
     CreateStatusPage,
     ViewStatuses,
     ViewStatus,
-    UpdateStatus,
+    UpdateStatusPage,
     DeleteStatus,
     CreateTicketTypePage,
     ViewTypes,
     ViewType,
-    UpdateTicketType,
+    UpdateTicketTypePage,
     DeleteTicketType,
     CreateTicketPage,
     ViewTickets,
@@ -118,7 +118,7 @@ class TestStatusModel(TestCase):
         self.create_status_object()
         self.create_user()
         self.client.login(username="Test Account", password="TestPassword")
-        url = reverse(UpdateStatus, args=["Test Status"])
+        url = reverse(UpdateStatusPage, args=["Test Status"])
         self.assertEqual(self.get_response_code(url), 200)
 
     def create_super_user(self):
@@ -262,7 +262,7 @@ class TestTicketTypeModel(TestCase):
         self.create_ticket_type_object()
         self.create_user()
         self.client.login(username="Test Account", password="TestPassword")
-        url = reverse(UpdateTicketType, args=["Test Ticket Type"])
+        url = reverse(UpdateTicketTypePage, args=["Test Ticket Type"])
         self.assertEqual(self.get_response_code(url), 200)
 
     def create_super_user(self):
