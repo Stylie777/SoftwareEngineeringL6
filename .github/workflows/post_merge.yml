@@ -33,7 +33,7 @@ jobs:
       run: |
         cd assignment/
         python manage.py collectstatic
-        python manage.py test
+        python manage.py test --keepdb test_software_engineering_l6_data
     - name: Deploy Webpage
       run: | 
         echo "deploy"
