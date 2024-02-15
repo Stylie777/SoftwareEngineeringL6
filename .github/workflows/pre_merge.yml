@@ -33,4 +33,4 @@ jobs:
       run: |
         cd assignment/
         python manage.py collectstatic
-        python manage.py test
+        python manage.py test --noinput
