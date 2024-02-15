@@ -5,10 +5,10 @@ on:
     push:
        branches: [main]
 env:
-DEBUG: ${{secrets.DEBUG}}
-ALLOWED_HOSTS: ${{secrets.ALLOWED_HOSTS}}
-DATABASE_URL: ${{secrets.DATABASE_URL}}
-SECRET_KEY: ${{secrets.SECRET_KEY}}
+  DEBUG: ${{secrets.DEBUG}}
+  ALLOWED_HOSTS: ${{secrets.ALLOWED_HOSTS}}
+  DATABASE_URL: ${{secrets.DATABASE_URL}}
+  SECRET_KEY: ${{secrets.SECRET_KEY}}
 
 jobs:
   pre-merge-tests:
