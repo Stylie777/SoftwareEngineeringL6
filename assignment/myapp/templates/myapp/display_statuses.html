@@ -32,16 +32,16 @@ Date:     22/09/23
         <tbody>
             {% for item in items %}
                 <tr scope="row">
-                    <td> {{item.status.status_name}} </td>
+                    <td> {{item.status_name}} </td>
                     <td> {{item.reporter}} </td>
-                    <td> <a href="/view_status/{{item.status.status_name}}"> View </a> </td>
+                    <td> <a href="/view_status/{{item.status_name}}"> View </a> </td>
                     {% if item.can_update %}
-                    <td> <a href="/update_status/{{item.status.status_name}}"> Update </a> </td>
+                    <td> <a href="/update_status/{{item.status_name}}"> Update </a> </td>
                     {% else %}
                     <td>Cannot Update</td>
                     {% endif %}
                     {% if user.is_superuser %}
-                    <td> <a href="/delete_status/{{item.status.status_name}}"> Delete </a> </td>
+                    <td> <a href="/delete_status/{{item.status_name}}"> Delete </a> </td>
                     {% endif %}
                 </tr>
             {% endfor %}

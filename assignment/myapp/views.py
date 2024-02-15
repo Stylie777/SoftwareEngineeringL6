@@ -263,9 +263,15 @@ def ViewTickets(request):
 
         can_update = can_user_update_ticket(request, ticket)
 
-        items.append({"ticket": ticket, "reporter": reporter, "can_update": can_update})
+        items.append({"ticket_id": ticket.ticket_id,
+                      "ticket_title": ticket.ticket_title,
+                      "assignee": ticket.assignee,
+                      "reporter": reporter,
+                      "ticket_type": ticket.type,
+                      "status": ticket.status ,
+                      "can_update": can_update})
 
-    return render(request, "myapp/display_tickets.html", {"items": items})
+    return render(request, "myapp/display_tickets.html", {"items": sorted(items, key=lambda i:i["ticket_id"])})
 
 
 @login_required(login_url="/login")
@@ -324,8 +330,12 @@ def ViewStatuses(request):
 
         can_update = can_user_update(request, status)
 
-        items.append({"status": status, "reporter": reporter, "can_update": can_update})
-    return render(request, "myapp/display_statuses.html", {"items": items})
+        items.append({
+            "status_name": status.status_name,
+            "reporter": reporter,
+            "can_update": can_update
+        })
+    return render(request, "myapp/display_statuses.html", {"items": sorted(items, key=lambda i:i["status_name"])})
 
 
 @login_required(login_url="/login")
@@ -375,10 +385,10 @@ def ViewTypes(request):
         can_update = can_user_update(request, ticket_type)
 
         items.append(
-            {"ticket_type": ticket_type, "reporter": reporter, "can_update": can_update}
+            {"type_name": ticket_type.type_name, "reporter": reporter, "can_update": can_update}
         )
 
-    return render(request, "myapp/display_types.html", {"items": items})
+    return render(request, "myapp/display_types.html", {"items": sorted(items, key=lambda i:i["type_name"])})
 
 
 @login_required(login_url="/login")
