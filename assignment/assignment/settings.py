@@ -96,7 +96,8 @@ WSGI_APPLICATION = "assignment.wsgi.application"
 DATABASES = {}
 
 database_url = os.environ.get("DATABASE_URL")
-DATABASES["default"] = dj_database_url.parse(database_url)
+DATABASES["default"] = dj_database_url.parse("postgres://software_engineering_l6_data_user:Wd3cS6XR2hQp8beJNPFkai0vUTzs8h6f@dpg-cn2vbrnqd2ns73ed6ck0-a.oregon-postgres.render.com/software_engineering_l6_data")
+
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
