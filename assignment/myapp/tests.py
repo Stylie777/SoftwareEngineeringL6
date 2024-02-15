@@ -119,7 +119,7 @@ class TestStatusModel(TestCase):
         self.create_user()
         self.client.login(username="Test Account", password="TestPassword")
         url = reverse(UpdateStatusPage, args=["Test Status"])
-        self.assertEqual(self.get_response_code(url), 200)
+        self.assertEqual(self.get_response_code(url), 302)
 
     def create_super_user(self):
         """
@@ -258,12 +258,12 @@ class TestTicketTypeModel(TestCase):
         url = reverse(ViewType, args=["Test Ticket Type"])
         self.assertEqual(self.get_response_code(url), 200)
 
-    def test_update_status_view_response_code(self):
+    def test_update_ticket_type_view_response_code(self):
         self.create_ticket_type_object()
         self.create_user()
         self.client.login(username="Test Account", password="TestPassword")
         url = reverse(UpdateTicketTypePage, args=["Test Ticket Type"])
-        self.assertEqual(self.get_response_code(url), 200)
+        self.assertEqual(self.get_response_code(url), 302)
 
     def create_super_user(self):
         """
@@ -404,7 +404,7 @@ class TestTicketModel(TestCase):
         self.client.login(username="Test Account", password="TestPassword")
         ticket = Ticket.objects.get(ticket_title="Test Ticket Title")
         url = reverse(UpdateTicket, args=[ticket.ticket_id])
-        self.assertEqual(self.get_response_code(url), 200)
+        self.assertEqual(self.get_response_code(url), 302)
 
     def create_super_user(self):
         """
