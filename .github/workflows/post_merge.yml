@@ -12,7 +12,7 @@ env:
 
 jobs:
   pre-merge-tests:
-    name: Pre-Merge Tests
+    name: Post-Merge Tests
     runs-on: ubuntu-latest
     strategy:
       max-parallel: 4
