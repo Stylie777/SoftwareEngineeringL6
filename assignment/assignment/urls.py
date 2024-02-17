@@ -48,7 +48,9 @@ urlpatterns = [
     path("view_types/", views.ViewTypes, name="View Types"),
     path("view_type/<str:type_name>", views.ViewType, name="View Type"),
     path("update_ticket/<int:id>", views.UpdateTicket, name="Update Ticket"),
-    path("update_status/<str:status_name>", views.UpdateStatusPage, name="Update Status"),
+    path(
+        "update_status/<str:status_name>", views.UpdateStatusPage, name="Update Status"
+    ),
     path("update_type/<str:type_name>", views.UpdateTicketTypePage, name="Update Type"),
     path("delete_ticket/<int:id>", views.DeleteTicket, name="Delete Ticket"),
     path("delete_status/<str:status_name>", views.DeleteStatus, name="Delete Status"),

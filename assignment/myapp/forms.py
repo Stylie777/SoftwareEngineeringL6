@@ -174,6 +174,7 @@ class AddStatus(forms.ModelForm):
             status.save()
         return status
 
+
 class UpdateStatus(forms.ModelForm):
     class Meta:
         model = Status
@@ -273,7 +274,8 @@ class AddTicketType(forms.ModelForm):
         if commit:
             ticket_type.save()
         return ticket_type
-    
+
+
 class UpdateTicketType(forms.ModelForm):
     class Meta:
         model = TicketType
