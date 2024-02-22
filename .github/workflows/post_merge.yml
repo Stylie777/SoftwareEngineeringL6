@@ -9,6 +9,7 @@ env:
   ALLOWED_HOSTS: ${{secrets.ALLOWED_HOSTS}}
   DATABASE_URL: ${{secrets.DATABASE_URL}}
   SECRET_KEY: ${{secrets.SECRET_KEY}}
+  DEPLOY_KEY: ${{secrets.RENDER_DEPLOY_KEY}}
 
 jobs:
   pre-merge-tests:
@@ -36,4 +37,4 @@ jobs:
         python manage.py test --noinput
     - name: Deploy Webpage
       run: | 
-        echo "deploy"
+        curl "$DEPLOY_KEY"
