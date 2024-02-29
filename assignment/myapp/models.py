@@ -16,7 +16,8 @@ from django.contrib.auth.models import User
 class Status(models.Model):
     status_name = models.CharField(max_length=20, primary_key=True, null=False)
     status_description = models.CharField(max_length=100, blank=True, null=True)
-    reporter_id = models.PositiveIntegerField(null=False, default=0)
+    reporter_id = models.PositiveIntegerField(
+        null=False, default=0)
 
     def __str__(self) -> str:
         """
