@@ -110,6 +110,6 @@ python3 manage.py test
 
 This should be run everytime a change is made to ensure continued validation of the webpage and ensure there are no errors. 
 
-[online-webpage]: http://stylie777.pythonanywhere.com
+[online-webpage]: https://software-engineering-l6.onrender.com/
 [venv-docs]: https://docs.python.org/3/library/venv.html
-[register-page]: https://stylie777.pythonanywhere.com/register/
+[register-page]: https://software-engineering-l6.onrender.com/register/
