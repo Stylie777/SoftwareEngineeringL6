@@ -35,6 +35,32 @@ from myapp.forms import AddStatus, AddTicketType, Ticket, AddTicket
 import datetime
 
 
+def get_get_response_code(client, url: str) -> int:
+    """
+    Gets the response code for a page on the application
+
+    Parameters:
+        url (str): The URL of the page to load
+
+    Returns:
+        (int): The response code for the URL
+    """
+    return client.get(url).status_code
+
+
+def get_post_response_code(client, url: str, data: dict = {}) -> int:
+    """
+    Gets the response code for a page on the application
+
+    Parameters:
+        url (str): The URL of the page to load
+
+    Returns:
+        (int): The response code for the URL
+    """
+    return client.post(url, data=data).status_code
+
+
 class TestStatusModel(TestCase):
     def create_status_object(
         self,
@@ -83,43 +109,31 @@ class TestStatusModel(TestCase):
             username="Test Account", email="test@test.com", password="TestPassword"
         )
 
-    def get_response_code(self, url: str) -> int:
-        """
-        Gets the response code for a page on the application
-
-        Parameters:
-            url (str): The URL of the page to load
-
-        Returns:
-            (int): The response code for the URL
-        """
-        return self.client.get(url).status_code
-
     def test_create_status_view_response_code(self):
         self.create_user()
         self.client.login(username="Test Account", password="TestPassword")
         url = reverse(CreateStatusPage)
-        self.assertEqual(self.get_response_code(url), 200)
+        self.assertEqual(get_get_response_code(self.client, url), 200)
 
     def test_view_statuses_view_response_code(self):
         self.create_user()
         self.client.login(username="Test Account", password="TestPassword")
         url = reverse(ViewStatuses)
-        self.assertEqual(self.get_response_code(url), 200)
+        self.assertEqual(get_get_response_code(self.client, url), 200)
 
     def test_view_status_view_response_code(self):
         self.create_status_object()
         self.create_user()
         self.client.login(username="Test Account", password="TestPassword")
         url = reverse(ViewStatus, args=["Test Status"])
-        self.assertEqual(self.get_response_code(url), 200)
+        self.assertEqual(get_get_response_code(self.client, url), 200)
 
     def test_update_status_view_response_code(self):
         self.create_status_object()
         self.create_user()
         self.client.login(username="Test Account", password="TestPassword")
         url = reverse(UpdateStatusPage, args=["Test Status"])
-        self.assertEqual(self.get_response_code(url), 302)
+        self.assertEqual(self.client.post(url).status_code, 302)
 
     def create_super_user(self):
         """
@@ -144,8 +158,27 @@ class TestStatusModel(TestCase):
         self.create_status_object()
         self.create_super_user()
         self.client.login(username="Test Account Admin", password="TestPassword")
-        url = reverse(DeleteStatus, args=["Test Status"])
-        self.assertEqual(self.get_response_code(url), 200)
+        status = Status.objects.get(status_name="Test Status")
+        url = reverse(DeleteStatus, args=[status.status_name])
+        self.assertEqual(302, get_post_response_code(self.client, url, {"delete": ""}))
+
+    def test_delete_status_view_deletes_status_when_superuser(self):
+        self.create_status_object()
+        self.create_super_user()
+        self.client.login(username="Test Account Admin", password="TestPassword")
+        status = Status.objects.get(status_name="Test Status")
+        url = reverse(DeleteStatus, args=[status.status_name])
+        self.client.post(url, {"delete": ""})
+        self.assertFalse(Ticket.objects.contains(status))
+
+    def test_delete_status_view_deletes_status_when_not_superuser(self):
+        self.create_status_object()
+        self.create_user()
+        self.client.login(username="Test Account", password="TestPassword")
+        status = Status.objects.get(status_name="Test Status")
+        url = reverse(DeleteStatus, args=[status.status_name])
+        self.client.post(url, {"delete": ""})
+        self.assertFalse(Ticket.objects.contains(status))
 
     def create_status_form(
         self, status_name: str, status_description: str
@@ -227,43 +260,31 @@ class TestTicketTypeModel(TestCase):
             username="Test Account", email="test@test.com", password="TestPassword"
         )
 
-    def get_response_code(self, url: str) -> int:
-        """
-        Gets the response code for a page on the application
-
-        Parameters:
-            url (str): The URL of the page to load
-
-        Returns:
-            (int): The response code for the URL
-        """
-        return self.client.get(url).status_code
-
     def test_create_ticket_type_view_response_code(self):
         self.create_user()
         self.client.login(username="Test Account", password="TestPassword")
         url = reverse(CreateTicketTypePage)
-        self.assertEqual(self.get_response_code(url), 200)
+        self.assertEqual(get_get_response_code(self.client, url), 200)
 
     def test_view_statuses_view_response_code(self):
         self.create_user()
         self.client.login(username="Test Account", password="TestPassword")
         url = reverse(ViewTypes)
-        self.assertEqual(self.get_response_code(url), 200)
+        self.assertEqual(get_get_response_code(self.client, url), 200)
 
     def test_view_status_view_response_code(self):
         self.create_ticket_type_object()
         self.create_user()
         self.client.login(username="Test Account", password="TestPassword")
         url = reverse(ViewType, args=["Test Ticket Type"])
-        self.assertEqual(self.get_response_code(url), 200)
+        self.assertEqual(get_get_response_code(self.client, url), 200)
 
     def test_update_ticket_type_view_response_code(self):
         self.create_ticket_type_object()
         self.create_user()
         self.client.login(username="Test Account", password="TestPassword")
         url = reverse(UpdateTicketTypePage, args=["Test Ticket Type"])
-        self.assertEqual(self.get_response_code(url), 302)
+        self.assertEqual(get_get_response_code(self.client, url), 302)
 
     def create_super_user(self):
         """
@@ -284,12 +305,31 @@ class TestTicketTypeModel(TestCase):
             password="TestPassword",
         )
 
-    def test_delete_status_view_response_code(self):
+    def test_delete_ticket_type_view_response_code(self):
         self.create_ticket_type_object()
         self.create_super_user()
         self.client.login(username="Test Account Admin", password="TestPassword")
-        url = reverse(DeleteTicketType, args=["Test Ticket Type"])
-        self.assertEqual(self.get_response_code(url), 200)
+        ticket_type = TicketType.objects.get(type_name="Test Ticket Type")
+        url = reverse(DeleteTicketType, args=[ticket_type.type_name])
+        self.assertEqual(302, get_post_response_code(self.client, url, {"delete": ""}))
+
+    def test_delete_ticket_type_view_deletes_ticket_type_when_superuser(self):
+        self.create_ticket_type_object()
+        self.create_super_user()
+        self.client.login(username="Test Account Admin", password="TestPassword")
+        ticket_type = TicketType.objects.get(type_name="Test Ticket Type")
+        url = reverse(DeleteTicketType, args=[ticket_type.type_name])
+        self.client.post(url, data={"delete": ""})
+        self.assertFalse(TicketType.objects.contains(ticket_type))
+
+    def test_delete_ticket_type_view_deletes_ticket_type_when_not_superuser(self):
+        self.create_ticket_type_object()
+        self.create_user()
+        self.client.login(username="Test Account", password="TestPassword")
+        ticket_type = TicketType.objects.get(type_name="Test Ticket Type")
+        url = reverse(DeleteTicketType, args=[ticket_type.type_name])
+        self.client.post(url, data={"delete": ""})
+        self.assertTrue(TicketType.objects.contains(ticket_type))
 
     def create_ticket_type_form(
         self, type_name: str, type_description: str
@@ -366,29 +406,17 @@ class TestTicketModel(TestCase):
             username="Test Account", email="test@test.com", password="TestPassword"
         )
 
-    def get_response_code(self, url: str) -> int:
-        """
-        Gets the response code for a page on the application
-
-        Parameters:
-            url (str): The URL of the page to load
-
-        Returns:
-            (int): The response code for the URL
-        """
-        return self.client.get(url).status_code
-
     def test_create_ticket_view_response_code(self):
         self.create_user()
         self.client.login(username="Test Account", password="TestPassword")
         url = reverse(CreateTicketPage)
-        self.assertEqual(self.get_response_code(url), 200)
+        self.assertEqual(get_get_response_code(self.client, url), 200)
 
     def test_view_tickets_view_response_code(self):
         self.create_user()
         self.client.login(username="Test Account", password="TestPassword")
         url = reverse(ViewTickets)
-        self.assertEqual(self.get_response_code(url), 200)
+        self.assertEqual(get_get_response_code(self.client, url), 200)
 
     def test_view_ticket_view_response_code(self):
         self.create_ticket_object()
@@ -396,7 +424,7 @@ class TestTicketModel(TestCase):
         self.client.login(username="Test Account", password="TestPassword")
         ticket = Ticket.objects.get(ticket_title="Test Ticket Title")
         url = reverse(ViewTicket, args=[ticket.ticket_id])
-        self.assertEqual(self.get_response_code(url), 200)
+        self.assertEqual(get_get_response_code(self.client, url), 200)
 
     def test_update_ticket_view_response_code(self):
         self.create_ticket_object()
@@ -404,7 +432,7 @@ class TestTicketModel(TestCase):
         self.client.login(username="Test Account", password="TestPassword")
         ticket = Ticket.objects.get(ticket_title="Test Ticket Title")
         url = reverse(UpdateTicket, args=[ticket.ticket_id])
-        self.assertEqual(self.get_response_code(url), 302)
+        self.assertEqual(get_post_response_code(self.client, url), 302)
 
     def create_super_user(self):
         """
@@ -425,13 +453,34 @@ class TestTicketModel(TestCase):
             password="TestPassword",
         )
 
+    def test_delete_ticket_view_deletes_ticket_when_superuser(self):
+        self.create_ticket_object()
+        self.create_super_user()
+        self.client.login(username="Test Account Admin", password="TestPassword")
+        ticket = Ticket.objects.get(ticket_title="Test Ticket Title")
+        url = reverse(DeleteTicket, args=[ticket.ticket_id])
+        self.client.post(url, data={"delete": ""})
+        self.assertFalse(Ticket.objects.contains(ticket))
+
     def test_delete_ticket_view_response_code(self):
         self.create_ticket_object()
         self.create_super_user()
         self.client.login(username="Test Account Admin", password="TestPassword")
         ticket = Ticket.objects.get(ticket_title="Test Ticket Title")
         url = reverse(DeleteTicket, args=[ticket.ticket_id])
-        self.assertEqual(self.get_response_code(url), 200)
+        self.assertEqual(302, self.client.post(url, data={"delete": ""}).status_code)
+
+    def test_delete_ticket_view_response_code_when_not_superuser(self):
+        self.create_ticket_object()
+        self.create_user()
+        self.client.login(username="Test Account", password="TestPassword")
+        ticket = Ticket.objects.get(ticket_title="Test Ticket Title")
+        url = reverse(DeleteTicket, args=[ticket.ticket_id])
+        self.client.post(url, data={"delete": ""})
+        # The Ticket will not be removed as part of the redirect, so we need
+        # to ensure the ticket has not been removed. By doing this, we know
+        # the permissions are correctly configured.
+        self.assertTrue(Ticket.objects.contains(ticket))
 
     def create_ticket_form(self, ticket_title: str) -> AddTicket:
         """
