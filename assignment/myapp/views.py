@@ -300,7 +300,12 @@ def ViewTicket(request, id: int):
     Returns:
         : Render of the webpage using the django template
     """
-    ticket = Ticket.objects.get(ticket_id=id)
+
+    try:
+        ticket = Ticket.objects.get(ticket_id=id)
+    except Exception as e:
+        messages.error(request, message=f"Error: {e}")
+        return redirect("View Tickets")
 
     return render(
         request,
@@ -374,7 +379,13 @@ def ViewStatus(request, status_name):
         status_name.replace("%20", " ")
     except:
         pass
-    status = Status.objects.get(status_name=status_name)
+
+    try:
+        status = Status.objects.get(status_name=status_name)
+    except Exception as e:
+        messages.error(request, message=f"Error: {e}")
+        return redirect("View Statuses")
+
     return render(
         request,
         "myapp/display_status.html",
@@ -435,7 +446,13 @@ def ViewType(request, type_name):
         type_name.replace("%20", " ")
     except:
         pass
-    type = TicketType.objects.get(type_name=type_name)
+
+    try:
+        type = TicketType.objects.get(type_name=type_name)
+    except Exception as e:
+        messages.error(request, message=f"Error: {e}")
+        return redirect("View Types")
+
     return render(
         request,
         "myapp/display_type.html",
@@ -454,7 +471,12 @@ def UpdateTicket(request, id):
     Returns:
         : Render of the webpage using the django template
     """
-    ticket = Ticket.objects.get(ticket_id=id)
+
+    try:
+        ticket = Ticket.objects.get(ticket_id=id)
+    except Exception as e:
+        messages.error(request, message=f"Error: {e}")
+        return redirect("View Tickets")
 
     if can_user_update_ticket(request, ticket):
         form = AddTicket(request.POST or None, instance=ticket)
@@ -489,7 +511,12 @@ def UpdateStatusPage(request, status_name):
         status_name.replace("%20", " ")
     except:
         pass
-    status = Status.objects.get(status_name=status_name)
+
+    try:
+        status = Status.objects.get(status_name=status_name)
+    except Exception as e:
+        messages.error(request, message=f"Error: {e}")
+        return redirect("View Statuses")
 
     if can_user_update(request, status):
         form = UpdateStatus(request.POST or None, instance=status)
@@ -524,7 +551,12 @@ def UpdateTicketTypePage(request, type_name):
         type_name.replace("%20", " ")
     except:
         pass
-    type = TicketType.objects.get(type_name=type_name)
+
+    try:
+        type = TicketType.objects.get(type_name=type_name)
+    except Exception as e:
+        messages.error(request, message=f"Error: {e}")
+        return redirect("View Types")
 
     if can_user_update(request, type):
         form = UpdateTicketType(request.POST or None, instance=type)
@@ -555,7 +587,12 @@ def DeleteTicket(request, id):
     Returns:
         : Render of the webpage using the django template
     """
-    ticket = Ticket.objects.get(ticket_id=id)
+
+    try:
+        ticket = Ticket.objects.get(ticket_id=id)
+    except Exception as e:
+        messages.error(request, message=f"Error: {e}")
+        return redirect("View Tickets")
 
     if request.method == "POST":
         if "delete" in request.POST:
@@ -582,7 +619,11 @@ def DeleteStatus(request, status_name):
     Returns:
         : Render of the webpage using the django template
     """
-    status = Status.objects.get(status_name=status_name)
+    try:
+        status = Status.objects.get(status_name=status_name)
+    except Exception as e:
+        messages.error(request, message=f"Error: {e}")
+        return redirect("View Statuses")
 
     if request.method == "POST":
         if "delete" in request.POST:
@@ -609,7 +650,12 @@ def DeleteTicketType(request, type_name):
     Returns:
         : Render of the webpage using the django template
     """
-    type = TicketType.objects.get(type_name=type_name)
+
+    try:
+        type = TicketType.objects.get(type_name=type_name)
+    except Exception as e:
+        messages.error(request, message=f"Error: {e}")
+        return redirect("View Types")
 
     if request.method == "POST":
         if "delete" in request.POST:
